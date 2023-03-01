@@ -6,7 +6,7 @@ LevelScreen::LevelScreen(Game* gamePointer)
 	, tempTex()
 	,tempSprite()
 {
-	tempTex.loadFromFile("");
+	tempTex.loadFromFile("Assets/Graphics/PlayerStand.png");
 	tempSprite.setTexture(tempTex);
 }
 
