@@ -1,8 +1,10 @@
 #include "Game.h"
+#include "Screen.h"
 
 Game::Game()
 	: window(sf::VideoMode::getDesktopMode(), "TowerGame", sf::Style::Titlebar | sf::Style::Close)
 	, gameClock()
+	, currentScreen(nullptr)
 {
 
 	//window setup
@@ -45,7 +47,10 @@ void Game::Update()
 {
 	sf::Time frameTime = gameClock.restart();
 
-	//Todo Update current screen
+	if (currentScreen)
+	{
+		currentScreen->Update(frameTime);
+	}
 
 	//TODO: Handle changes to other screens.
 }
@@ -55,6 +60,9 @@ void Game::Draw()
 	window.clear();
 	
 	//TODO Draw current screen
+	
+	currentScreen->Draw(window);
+
 
 	window.display();
 }
