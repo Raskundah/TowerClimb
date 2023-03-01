@@ -60,7 +60,7 @@ void Game::Draw()
 	window.clear();
 	
 	//TODO Draw current screen
-	
+	if(currentScreen)
 	currentScreen->Draw(window);
 
 
