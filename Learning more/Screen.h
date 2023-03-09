@@ -5,10 +5,12 @@ class Game;
 
 class Screen
 {
-public:
-	Screen(Game* gamePointer);
 
-	virtual void Update(sf::Time frameTime); 
+public:
+
+	Screen(Game* newGamePointer);
+
+	virtual void Update(sf::Time frameTime);
 	virtual void Draw(sf::RenderTarget& target);
 
 protected:

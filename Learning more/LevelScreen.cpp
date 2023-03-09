@@ -1,20 +1,19 @@
 #include "LevelScreen.h"
+#include "AssetManager.h"
 
-
-LevelScreen::LevelScreen(Game* gamePointer)
-	: Screen(gamePointer)
-	, tempTex()
-	,tempSprite()
+LevelScreen::LevelScreen(Game* newGamePointer)
+	: Screen(newGamePointer)
+	, player()
 {
-	tempTex.loadFromFile("Assets/Graphics/PlayerStand.png");
-	tempSprite.setTexture(tempTex);
+
 }
 
 void LevelScreen::Update(sf::Time frameTime)
 {
+	player.Update(frameTime);
 }
 
-void LevelScreen::Draw(sf::RenderTarget& target)
+void LevelScreen::Draw(sf::RenderTarget& _target)
 {
-	target.draw(tempSprite);
+	player.Draw(_target);
 }

@@ -1,24 +1,17 @@
 #pragma once
 #include "Screen.h"
 #include <SFML/Graphics.hpp>
-#include "Player.h"
 
 class Game;
 
-class LevelScreen :
+class TitleScreen :
     public Screen
 {
 
 public:
-    LevelScreen(Game* newGamePointer);
+    TitleScreen(Game* newGamePointer);
 
     void Update(sf::Time frameTime) override;
     void Draw(sf::RenderTarget& target) override;
-
-
-private:
-
-    Player player;
-
 };
 

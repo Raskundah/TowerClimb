@@ -1,7 +1,7 @@
 #include "Screen.h"
 
-Screen::Screen(Game* gamePointer)
-	:gamePointer(gamePointer)
+Screen::Screen(Game* newGamePointer)
+	: gamePointer(newGamePointer)
 {
 }
 
