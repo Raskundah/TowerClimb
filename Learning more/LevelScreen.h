@@ -2,6 +2,8 @@
 #include "Screen.h"
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "Platform.h"
+#include "Door.h"
 
 class Game;
 
@@ -19,6 +21,8 @@ public:
 private:
 
     Player player;
+    Platform testPlatform;
+    Door door;
 
 };
 

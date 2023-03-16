@@ -11,28 +11,28 @@ enum class PhysicsType {
 
 Player::Player()
 	: SpriteObject()
-	, m_position(10,10)
-	,m_twoFramesOldPos(m_position)
+	,m_twoFramesOldPos(GetPosition())
 	, m_velocity()
 	, m_acceleration(100,100)
 {
 	m_sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/PlayerStand.png"));
-	m_sprite.setPosition(m_position);
+
 }
 
 void Player::Update(sf::Time _frameTime)
 {
-	const PhysicsType physics = PhysicsType::SYMPLECTIC_EULER;
+	const float DRAG_MULT = 10.0f;
+	const PhysicsType physics = PhysicsType::FORWARD_EULER;
 
 	switch (physics)
 	{
 	case PhysicsType::FORWARD_EULER:
 	{
-			m_position = m_position + m_velocity * _frameTime.asSeconds();
+			SetPosition(GetPosition() + m_velocity * _frameTime.asSeconds());
 
 			m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-			m_velocity *= 0.5f;
+			 m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
 
 
 			UpdateAcceleration();
@@ -45,9 +45,9 @@ void Player::Update(sf::Time _frameTime)
 
 		m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-		m_velocity *= 0.5f;
+		m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
 
-		m_position = m_position + m_velocity * _frameTime.asSeconds();
+		SetPosition(GetPosition() + m_velocity * _frameTime.asSeconds());
 
 	}
 	break;
@@ -56,10 +56,10 @@ void Player::Update(sf::Time _frameTime)
 	{
 		m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-		m_velocity *= 0.5f;
+		m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
 
 
-		m_position = m_position + m_velocity * _frameTime.asSeconds();
+		SetPosition(GetPosition() + m_velocity * _frameTime.asSeconds());
 
 
 		UpdateAcceleration();
@@ -71,10 +71,10 @@ void Player::Update(sf::Time _frameTime)
 	{
 		UpdateAcceleration();
 
-		sf::Vector2f lastFramePos = m_position;
+		sf::Vector2f lastFramePos = GetPosition();
 
 		//current frame pos
-		m_position = 2.0f * lastFramePos - m_twoFramesOldPos + m_acceleration * _frameTime.asSeconds() * _frameTime.asSeconds();
+		GetPosition() = 2.0f * lastFramePos - m_twoFramesOldPos + m_acceleration * _frameTime.asSeconds() * _frameTime.asSeconds();
 
 		//two frames ago (for next frame)
 
@@ -91,7 +91,7 @@ void Player::Update(sf::Time _frameTime)
 		sf::Vector2f halfFrameVel = m_velocity + m_acceleration * _frameTime.asSeconds() / 2.0f;
 
 		//get new frame position using hjalf frame velocity
-		m_position = m_position + halfFrameVel * _frameTime.asSeconds();
+		SetPosition(GetPosition() + halfFrameVel * _frameTime.asSeconds());
 
 
 		//update acceleration
@@ -101,7 +101,7 @@ void Player::Update(sf::Time _frameTime)
 		//get new frames velocity using half frame velocity and updated acceleration
 		m_velocity = halfFrameVel + m_acceleration * _frameTime.asSeconds();
 
-		m_velocity *= 0.5f;
+		m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
 
 	}
 	break;
@@ -109,7 +109,7 @@ void Player::Update(sf::Time _frameTime)
 		break;
 	}
 
-	m_sprite.setPosition(m_position);
+	m_sprite.setPosition(GetPosition());
 }
 
 void Player::UpdateAcceleration()
@@ -118,7 +118,7 @@ void Player::UpdateAcceleration()
 
 	m_acceleration.x = 0;
 	m_acceleration.y = 0;
-	const float ACCEL = 20000;
+	const float ACCEL = 10000;
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
