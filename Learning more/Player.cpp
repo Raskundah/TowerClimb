@@ -37,7 +37,7 @@ void Player::Update(sf::Time _frameTime)
 
 			m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-			 m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
+			 m_velocity.x = m_velocity.x - m_velocity.x * DRAG_MULT * _frameTime.asSeconds();
 
 
 			UpdateAcceleration();
@@ -50,7 +50,7 @@ void Player::Update(sf::Time _frameTime)
 
 		m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-		m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
+		m_velocity.x = m_velocity.x - m_velocity.x * DRAG_MULT * _frameTime.asSeconds();
 
 		SetPosition(GetPosition() + m_velocity * _frameTime.asSeconds());
 
@@ -61,7 +61,7 @@ void Player::Update(sf::Time _frameTime)
 	{
 		m_velocity = m_velocity + m_acceleration * _frameTime.asSeconds();
 
-		m_velocity = m_velocity - m_velocity * DRAG_MULT * _frameTime.asSeconds();
+		m_velocity.x = m_velocity.x - m_velocity.x * DRAG_MULT * _frameTime.asSeconds();
 
 
 		SetPosition(GetPosition() + m_velocity * _frameTime.asSeconds());
@@ -119,6 +119,8 @@ void Player::Update(sf::Time _frameTime)
 
 void Player::HandleCollision(SpriteObject other)
 {
+	const float JUMPSPEED = 1000;
+
 	sf::Vector2f depth = GetCollisionDepth(other);
 	sf::Vector2f newPos = GetPosition();
 
@@ -126,12 +128,25 @@ void Player::HandleCollision(SpriteObject other)
 	{
 		// move in x direction
 		newPos.x += depth.x;
+
+		m_velocity.x = 0;
+		m_acceleration.x = 0;
 	}
 
 	else
 	{
 		//move in y
 		newPos.y += depth.y;
+
+		m_velocity.y = 0;
+		m_acceleration.y = 0;
+
+
+		//if collided from above
+		if (depth.y < 0)
+		{
+			m_velocity.y = -JUMPSPEED;
+		}
 	}
 	SetPosition(newPos);
 }
@@ -140,9 +155,10 @@ void Player::UpdateAcceleration()
 {
 	//update acceleration
 
-	m_acceleration.x = 0;
-	m_acceleration.y = 0;
 	const float ACCEL = 10000;
+	const float GRAVITY = 1000;
+	m_acceleration.x = 0;
+	m_acceleration.y = GRAVITY;
 
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -152,16 +168,6 @@ void Player::UpdateAcceleration()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		m_acceleration.x = ACCEL;
-
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		m_acceleration.y = -ACCEL;
-
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		m_acceleration.y = ACCEL;
 
 	}
 }
