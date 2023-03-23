@@ -7,6 +7,8 @@ public:
     Player();
 
     void Update(sf::Time _frameTime) override;
+
+    void HandleCollision(SpriteObject other);
     
 
 private:

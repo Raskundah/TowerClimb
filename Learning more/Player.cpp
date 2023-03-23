@@ -117,6 +117,25 @@ void Player::Update(sf::Time _frameTime)
 	m_sprite.setPosition(GetPosition());
 }
 
+void Player::HandleCollision(SpriteObject other)
+{
+	sf::Vector2f depth = GetCollisionDepth(other);
+	sf::Vector2f newPos = GetPosition();
+
+	if (abs(depth.x) < abs(depth.y))
+	{
+		// move in x direction
+		newPos.x += depth.x;
+	}
+
+	else
+	{
+		//move in y
+		newPos.y += depth.y;
+	}
+	SetPosition(newPos);
+}
+
 void Player::UpdateAcceleration()
 {
 	//update acceleration
