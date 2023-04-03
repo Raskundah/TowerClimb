@@ -19,8 +19,8 @@ public:
 	sf::Vector2f GetPosition();
 	
 
-	void SetPosition(sf::Vector2f _newPosition);
-	void SetPosition(float m_newX, float m_newY);
+	virtual void SetPosition(sf::Vector2f _newPosition);
+	void SetPosition(float m_newX, float m_newY) ;
 
 	bool CheckCollision(SpriteObject other);
 	void SetColliding(bool newColliding);

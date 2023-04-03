@@ -2,6 +2,7 @@
 #include "Screen.h"
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "MovingPlatform.h"
 #include "Platform.h"
 #include "Door.h"
 
@@ -22,6 +23,7 @@ private:
 
     Player player;
     Platform testPlatform;
+    MovingPlatform testMovingPlatform;
     Door door;
 
 };
