@@ -1,21 +1,28 @@
 #include "LevelScreen.h"
 #include "AssetManager.h"
+#include "MovingPlatform.h"
+#include "BreakingPlatform.h"
+#include "DeadlyPlatform.h"
+#include "Platform.h"
 
 LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player()
-	, testPlatform()
-	, testMovingPlatform(sf::Vector2f(0, 700),sf::Vector2f(1000, 700))
+	, platforms()
 	, door()
 {
 	//default positions for non dynamically allocated and test objects.
 
 	//TODO: add vectors of object positions.
 
-	testPlatform.SetPosition(500, 500);
-	door.SetPosition(30, 500);
-	testMovingPlatform.SetPosition(sf::Vector2f(500, 700));
+	
 	player.SetPosition(30, 30);
+	door.SetPosition(30, 500);
+
+	platforms.push_back(new Platform(sf::Vector2f(500, 500)));
+	platforms.push_back(new DeadlyPlatform(sf::Vector2f(90, 800)));
+	platforms.push_back(new MovingPlatform(sf::Vector2f(500, 700), sf::Vector2f(0, 700),sf::Vector2f(1000, 700)));
+	platforms.push_back(new BreakingPlatform(sf::Vector2f(700, 700)));
 
 }
 
@@ -24,34 +31,29 @@ void LevelScreen::Update(sf::Time frameTime)
 	//update moving positions
 
 	player.Update(frameTime);
-	testMovingPlatform.Update(frameTime);
+	for (int i = 0; i < platforms.size(); ++i)
+	{
+		platforms[i]->Update(frameTime);
+	}
 
 	//default colllisiuon states
 
 	player.SetColliding(false);
-	testPlatform.SetColliding(false);
-	testMovingPlatform.SetColliding(false);
 	door.SetColliding(false);
 
-	//check if player collides with static platform
-
-	if (testPlatform.CheckCollision(player))
+	for (int i = 0; i < platforms.size(); ++i)
 	{
-		player.SetColliding(true);
-		testPlatform.SetColliding(true);
-		player.HandleCollision(testPlatform);
+		platforms[i]->SetColliding(false);
+
+		if (platforms[i]->CheckCollision(player))
+		{
+			player.SetColliding(true);
+			platforms[i]->SetColliding(true);
+			player.HandleCollision(*platforms[i]);
+			platforms[i]->HandleCollision(player);
+		}
 	}
 
-	//check is player collides with a dynamic, moving platform
-	if (testMovingPlatform.CheckCollision(player))
-	{
-		player.SetColliding(true);
-		testMovingPlatform.SetColliding(true);
-		player.HandleCollision(testPlatform);
-	}
-
-
-	//check if player collides with the door.
 	if (player.CheckCollision(door))
 	{
 		player.SetColliding(true);
@@ -63,8 +65,10 @@ void LevelScreen::Update(sf::Time frameTime)
 
 void LevelScreen::Draw(sf::RenderTarget& _target)
 {
-	testPlatform.Draw(_target);
-	testMovingPlatform.Draw(_target);
+	for (int i = 0; i < platforms.size(); ++i)
+	{
+		platforms[i]->Draw(_target);
+	}
 	door.Draw(_target);
 	player.Draw(_target);
 }

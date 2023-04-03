@@ -4,7 +4,7 @@ class MovingPlatform :
     public Platform
 {
 public:
-    MovingPlatform(sf::Vector2f newPos1, sf::Vector2f newPos2);
+    MovingPlatform(sf::Vector2f newPosition, sf::Vector2f newPos1, sf::Vector2f newPos2);
 
     void Update(sf::Time _frameTime) override;
     void SetPosition(sf::Vector2f _newPosition) override;

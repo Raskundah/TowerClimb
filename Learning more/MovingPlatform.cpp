@@ -2,9 +2,9 @@
 #include "AssetManager.h"
 #include "VectorHelper.h"
 
-MovingPlatform::MovingPlatform(sf::Vector2f newPos1, sf::Vector2f newPos2)
-	: Platform()
-	, SPEED(100)
+MovingPlatform::MovingPlatform(sf::Vector2f newPosition, sf::Vector2f newPos1, sf::Vector2f newPos2)
+	: Platform(newPosition)
+	, SPEED(1)
 	, m_POS1(newPos1)
 	, m_POS2(newPos2)
 	, velocity (0, 0)
