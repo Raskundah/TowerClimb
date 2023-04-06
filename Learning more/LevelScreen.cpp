@@ -70,6 +70,9 @@ void LevelScreen::Update(sf::Time frameTime)
 			door.HandleCollision(player);
 		};
 	}
+	else
+		endPanel.Update(frameTime);
+
 }
 
 //draw all objects to game window
@@ -92,4 +95,5 @@ void LevelScreen::Draw(sf::RenderTarget& _target)
 void LevelScreen::TriggerEndState(bool _win)
 {
 	gameRunning = false;
+	endPanel.StartAnimation();
 }

@@ -10,6 +10,7 @@ public:
 	virtual void Draw(sf::RenderTarget& _target);
 
 	void SetPosition(sf::Vector2f newPosition);
+	void StartAnimation();
 
 private:
 	sf::Sprite m_background;
@@ -17,5 +18,8 @@ private:
 	sf::Text m_message;
 	sf::Vector2f m_position;
 	sf::RenderWindow* m_window;
+
+	bool m_animatingIn;
+	sf::Clock m_animationClock;
 };
 
